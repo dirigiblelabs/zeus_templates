@@ -1,0 +1,5 @@
+{
+  "extension":"/zeus/templates/templatesExtension",
+  "extension-point":"/zeus/templates/templates_database_crud_hooks",
+  "description":"Database CRUD extension for the '/ScriptingServices/zeus/templates/templates.js' service, managing the 'ZEUS_TEMPLATES' table"
+}

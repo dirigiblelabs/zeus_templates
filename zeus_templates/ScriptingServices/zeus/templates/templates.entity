@@ -1,0 +1,15 @@
+{
+  "entityName":"Zeus_templates",
+  "tableName":"ZEUS_TEMPLATES",
+  "tableType":"TABLE",
+  "serviceName":"templates.js",
+  "libraryName":"templates_lib.js",
+  "specification":"templates.swagger",
+  "getEnabled":"true",
+  "postEnabled":"true",
+  "putEnabled":"true",
+  "deleteEnabled":"true",
+  "countEnabled":"true",
+  "offsetAndLimitEnabled":"true",
+  "metadataEnabled":"true"
+}

@@ -1,0 +1,229 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.0.0",
+        "title": "Zeus_templates_items Entity Service",
+        "description":"This is a RESTful web service for listing, viewing and managing entities of the type 'Zeus_templates_items'"
+    },
+    "basePath":"/services",
+    "tags":[
+      {
+         "name":"Zeus_templates_items",
+         "description":"View and manage Zeus_templates_items objects"
+      }
+    ],
+    "paths": {
+        "/js/zeus/templates/templates_items.js": {
+            "get": {
+            	"tags":[
+               		"Zeus_templates_items"
+            	],
+                "description": "Gets 'Zeus_templates_items' objects.\n",
+                "parameters": [
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "description": "Count of all the records",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "tmpli_id",
+                        "in": "query",
+                        "description": "Identifier of the 'Zeus_templates_items' object",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "metadata",
+                        "in": "query",
+                        "description": "Metadata of the 'Zeus_templates_items' object",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Limit of the objects list",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "Offset of the objects list",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort parameter",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "desc",
+                        "in": "query",
+                        "description": "Descending order",
+                        "required": false,
+                        "type": "boolean"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema":{
+		                     "$ref":"#/definitions/Zeus_templates_items"
+                        }
+                    }
+                }
+            },
+            "post": {
+            	"tags":[
+               		"Zeus_templates_items"
+            	],
+                "description": "Creates a new 'Zeus_templates_items' object.\n",
+                "consumes":[
+	               "application/json"
+	            ],
+	            "produces":[
+	               "plain/text"
+	            ],
+	            "parameters":[
+	               {
+	                  "in":"body",
+	                  "name":"body",
+	                  "description":"Zeus_templates_items object that needs to be added",
+	                  "required":true,
+	                  "schema":{
+	                     "$ref":"#/definitions/Zeus_templates_items"
+	                  }
+	               }
+	            ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema":{
+		                     "$ref":"#/definitions/Zeus_templates_items"
+                        }
+                    }
+                }
+            },
+            "put": {
+            	"tags":[
+               		"Zeus_templates_items"
+            	],
+                "description": "Updates an existing 'Zeus_templates_items' object.\n",
+                "consumes":[
+	               "application/json"
+	            ],
+	            "produces":[
+	               "plain/text"
+	            ],
+	            "parameters":[
+	               {
+	                  "in":"body",
+	                  "name":"body",
+	                  "description":"Zeus_templates_items object that needs to be added",
+	                  "required":true,
+	                  "schema":{
+	                     "$ref":"#/definitions/Zeus_templates_items"
+	                  }
+	               }
+	            ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema":{
+		                     "$ref":"#/definitions/Zeus_templates_items"
+                        }
+                    }
+                }
+            },
+            "delete": {
+            	"tags":[
+               		"Zeus_templates_items"
+            	],
+                "description": "Deletes 'Zeus_templates_items' objects.\n",
+                "parameters": [
+                    {
+                        "name": "tmpli_id",
+                        "in": "query",
+                        "description": "Identifier of the 'Zeus_templates_items' object",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema":{
+		                     "$ref":"#/definitions/Zeus_templates_items"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions":{
+        "Zeus_templates_items": {
+	        "type":"object",
+	        "properties": {
+        		"tmpli_id": {
+	            	"type": 
+        "integer"
+	    		}
+				,
+        		"tmpli_tmpl_id": {
+	            	"type": 
+        "integer"
+	    		}
+				,
+        		"tmpli_name": {
+	            	"type": 
+        "string"
+	    		}
+				,
+        		"tmpli_image_name": {
+	            	"type": 
+        "string"
+	    		}
+				,
+        		"tmpli_image_version": {
+	            	"type": 
+        "string"
+	    		}
+				,
+        		"tmpli_env": {
+	            	"type": 
+        "string"
+	    		}
+				,
+        		"tmpli_scale_min": {
+	            	"type": 
+        "integer"
+	    		}
+				,
+        		"tmpli_scale_max": {
+	            	"type": 
+        "integer"
+	    		}
+				,
+        		"tmpli_expose_internal": {
+	            	"type": 
+        "string"
+	    		}
+				,
+        		"tmpli_expose_external": {
+	            	"type": 
+        "string"
+	    		}
+	        }
+        }
+	}
+}
