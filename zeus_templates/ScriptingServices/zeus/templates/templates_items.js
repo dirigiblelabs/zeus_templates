@@ -62,7 +62,7 @@ function handleGetRequest(httpRequest, httpResponse, xss) {
 				sendResponse(httpResponse, httpResponse.NOT_FOUND, 'text/plain', 'No entity found with \'tmpli_id\'=' + id);
 			}
 		} else if (count !== null) {
-			var templates_itemsCount = templates_itemsDao.count();
+			var templates_itemsCount = templates_itemsDao.count(tmpli_tmpl_id);
 			sendResponse(httpResponse, httpResponse.OK, 'text/plain', templates_itemsCount);
 		} else if (metadata !== null) {
 			var templates_itemsMetadata = templates_itemsDao.metadata();

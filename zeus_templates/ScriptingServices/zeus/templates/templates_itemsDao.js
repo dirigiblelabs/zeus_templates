@@ -131,11 +131,19 @@ exports.delete = function(entity) {
 };
 
 // Return the entities count
-exports.count = function() {
+exports.count = function(tmpli_tmpl_id) {
+
+	if (tmpli_tmpl_id === null) {
+    	return 0;
+	}
+	
     var count = 0;
     var connection = datasource.getConnection();
     try {
     	var sql = 'SELECT COUNT(*) FROM ZEUS_TEMPLATES_ITEMS';
+    	
+    	sql += ' WHERE TMPLI_TMPL_ID = ' + tmpli_tmpl_id;
+    	
         var statement = connection.prepareStatement(sql);
         var rs = statement.executeQuery();
         if (rs.next()) {

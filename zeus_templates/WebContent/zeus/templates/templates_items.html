@@ -49,7 +49,6 @@
 						<th>Scaling Max</th>
 						<th>Expose Internal</th>
 						<th>Expose External</th>
-						<th>TMPL_ID</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -64,7 +63,6 @@
 						<td>{{entry.tmpli_scale_max}}</td>
 						<td>{{entry.tmpli_expose_internal}}</td>
 						<td>{{entry.tmpli_expose_external}}</td>
-						<td>{{entry.tmpli_tmpl_id}}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -97,9 +95,9 @@
 						ng-model="selectedEntry.tmpli_id" readonly>
 					</div>
 					
-					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-					<label>TMPL_ID</label>
-					<input type="text" class="form-control" 
+					<!-- master-detail support -->
+				  <div>
+					<input type="hidden" class="form-control" 
 						ng-model="selectedEntry.tmpli_tmpl_id"
 						ng-readonly="operation == 'show'" required="required">
 					</div>
@@ -184,17 +182,23 @@
 			
 			var url = '../../../js/zeus/templates/templates_items.js';
 			
-			$scope.primaryKey = 'tmpli_tmpl_id';
+			// master-detail support
+			$scope.foreignKey = 'tmpli_tmpl_id';
+			var urlParameter = getURLParameter($scope.foreignKey);
+			if (urlParameter) {
+				if(!$scope.foreignKeyParameter) {
+					$scope.foreignKeyParameter = urlParameter;
+				}
+			}
 
-			$scope.urlParameter = getURLParameter($scope.primaryKey);
-	        $scope.exist = $scope.urlParameter !== null;
+	        $scope.exist = $scope.foreignKeyParameter !== null;
 	        $scope.errorMessage = null;
 	        $scope.successfullyUpdated = false;
 	        
-	        if($scope.urlParameter){
-	        	var getUrl = url + '?' + $scope.primaryKey + '=' + $scope.urlParameter;
+	        if($scope.foreignKeyParameter){
+	        	url = url + '?' + $scope.foreignKey + '=' + $scope.foreignKeyParameter;
 	
-	        	$http.get(getUrl)
+	        	$http.get(url)
 	        	.success(function(data){
 	            	$scope.data = data;
 				}).error(function(){
@@ -238,7 +242,10 @@
                       switch (operation) {
                           case 'new':
                               if ($scope.operation !== 'new') {
-                            	  $scope.selectedEntry = null;
+                            	  $scope.selectedEntry = {};
+                            	  // master-detail support
+                            	  $scope.selectedEntry[$scope.foreignKey] = $scope.foreignKeyParameter;
+                            	  
                                   $scope.operation = 'new';
                               } else {
                                   $scope.operation = 'show';
@@ -364,7 +371,9 @@
 			
 			//pagination
 			$scope.viewby = 100;
-			var urlCount = url + '?count';
+			
+			// master-detail support
+			var urlCount = url + '&count';
 			$http.get(urlCount)
 				.success(function(count){
 					$scope.totalItems = count;
