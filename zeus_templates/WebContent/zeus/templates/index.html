@@ -69,11 +69,12 @@
 			</div>
 			
 			
-			
 			<ul class="nav nav-tabs">
 			  <li class="active"><a data-toggle="tab" href="#details">Properties</a></li>
-			  <li><a data-toggle="tab" href="#items">Items</a></li>
+			  <li><a data-toggle="tab" href="#deployments">Deployments</a></li>
+			  <li><a data-toggle="tab" href="#services">Services</a></li>
 			</ul>
+			
 			
 			<div class="tab-content">
   				<div id="details" class="tab-pane fade in active">
@@ -81,32 +82,32 @@
 					<br>
 					<!-- new, edit and delete buttons -->
 					<div class="btn-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<input class="btn btn-default btn-sm" type="button" value="New"
+						<input class="btn btn-default" type="button" value="New"
 							ng-click="setOperation('new')"
 							ng-disabled="errorMessage || operation == 'new' || operation == 'update'"> <input
-							class="btn btn-default btn-sm" type="button" value="Edit"
+							class="btn btn-default" type="button" value="Edit"
 							ng-click="setOperation('update')"
 							ng-disabled="errorMessage || operation == 'new' || operation == 'update'"> <input
-							class="btn btn-default btn-sm" type="button" value="Delete"
+							class="btn btn-default" type="button" value="Delete"
 							ng-click="delete()"
 							ng-disabled="errorMessage || operation == 'new' || operation == 'update'">
 					</div>
-					<br>
-					<br>
+					<br><br>
 					<div>
 						<!-- input form -->
 						<div>
+				  
 						  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 							<label>#</label>
 							<input type="text" class="form-control" 
 								ng-model="selectedEntry.tmpl_id" readonly>
-						  </div>
-						  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+						</div>
+				 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 							<label>Name</label>
 							<input type="text" class="form-control" 
 								ng-model="selectedEntry.tmpl_name"
 								ng-readonly="operation == 'show'" required="required">
-						  </div>
+						</div>
 						  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 							<label>Date</label>
 							<p class="input-group">
@@ -118,47 +119,43 @@
 						        	<button type="button" class="btn btn-default" ng-click="tmpl_dateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
 						        </span>
 				           	</p>
-						  </div>
-						  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+						</div>
+				  		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 							<label>Author</label>
 							<input type="text" class="form-control" 
 								ng-model="selectedEntry.tmpl_author"
 								ng-readonly="operation == 'show'" required="required">
-						  </div>
+						</div>
 						  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 							<label>Description</label>
 							<textarea class="form-control" 
-								ng-model="selectedEntry.tmpl_description"
+								ng-model="selectedEntry.tmpl_description" cols="50" rows="5" 
 								ng-readonly="operation == 'show'" required="required"></textarea>
-						  </div>
 						</div>
-						
+						</div>
+				
 						<!-- save and cancel buttons -->
 						<div class="btn-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 							<br>
-							<input class="btn btn-primary btn-sm" type="button" value="Save" ng-show="operation == 'new' || operation == 'update'"
+							<input class="btn btn-primary" type="button" value="Save" ng-show="operation == 'new' || operation == 'update'"
 								ng-click="confirmAction()"> 
-							<input class="btn btn-default btn-sm" type="button" value="Cancel" ng-show="operation == 'new' || operation == 'update'"
+							<input class="btn btn-default" type="button" value="Cancel" ng-show="operation == 'new' || operation == 'update'"
 								ng-click="cancelAction()">
 						</div>
 					</div>
-					
-					
 				</div>
-  				<div id="items" class="tab-pane fade">
-  				
+				<div id="deployments" class="tab-pane fade">
   					<br>
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<iframe id="templates-items" ng-src="{{itemsUrl}}" frameborder="0" style="width: 100%; height: 1000px"></iframe>
+						<iframe id="deployments-iframe" ng-src="{{urlDeployments}}" frameborder="0" style="width: 100%; height: 1000px"></iframe>
 					</div>
-					
-					
 				</div>
-				
-				
-			</div>
-			
-		</div>
+				<div id="services" class="tab-pane fade">
+  					<br>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<iframe id="services-iframe" ng-src="{{urlServices}}" frameborder="0" style="width: 100%; height: 1000px"></iframe>
+					</div>
+				</div>
 	</div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
@@ -170,13 +167,24 @@
 		angular.module('page', ['ngAnimate', 'ui.bootstrap']);
 		angular.module('page').controller('ManageController', function ($scope, $http) {
 			
-			var url = '../../../js/zeus/templates/templates.js';
-			var itemsUrl = 'templates_items.html';
+			var url = '../../../js/zeus/templates//templates.js';
+			var urlDeployments = 'template_deployments.html';
+			var urlServices = 'template_services.html'; 
 
 			$http.get(url)
 				.success(function(data){
 					$scope.data = data;
 				});
+			
+			/* ---- Uncomment and configure in case of using dropdown or list widgets in the form above  ----
+			
+			var urlRefs = 'ENDPOINT_OF_THE_REFS_SERVICE';
+				
+			$http.get(urlRefs)
+				.success(function(refs){
+					$scope.refs = refs;
+				});
+			*/
 			
 			$scope.selectedEntry;
             $scope.operation = 'show';
@@ -188,7 +196,8 @@
 						$scope.showEntry = false;
 						$scope.selectedEntry = null;
 						entry._selected_ = false;
-						$scope.itemsUrl = 'no_selection.html';
+						$scope.urlDeployments = 'no_selection.html';
+						$scope.urlServices = 'no_selection.html';
 					}else{
 						for(var i = 0 ; i < $scope.data.length; i ++){
 							$scope.data[i]._selected_ = false;
@@ -196,7 +205,8 @@
 						entry._selected_ = true;
 						$scope.showEntry = true;
 						$scope.selectedEntry = entry;
-						$scope.itemsUrl = itemsUrl + '?tmpli_tmpl_id=' + entry.tmpl_id;
+						$scope.urlDeployments = urlDeployments + '?tmpld_tmpl_id=' + entry.tmpl_id;
+						$scope.urlServices = urlServices + '?tmpls_tmpl_id=' + entry.tmpl_id;
 					}
 				}
 			};
@@ -370,29 +380,6 @@
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-	<script>
-	  $( document ).ready(function() {
-	    $.getJSON("main.menu", function(data) {
-			$.each(data, function(i, item) {
-				var itemContent = "";
-				if (item.subMenu.length > 0) {
-					itemContent += "<li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">" + item.name + " <b class=\"caret\"></b></a>";
-					itemContent += "<ul class=\"dropdown-menu\">";
-					$.each(item.subMenu, function(j, subitem) {
-						itemContent += "<li><a href=\"" + subitem.link + "\" >" + subitem.name + "</a></li>";
-					});
-					itemContent += "</ul>";
-				} else {
-					itemContent += "<li><a href=\"" + item.link + "\" >" + item.name + "</a>";
-				}
-				itemContent += "</li>";
-				$("#main-menu").append(itemContent);
-			});
-		});
-	  });
-	</script>
 
-
-	
 </body>
 </html>
