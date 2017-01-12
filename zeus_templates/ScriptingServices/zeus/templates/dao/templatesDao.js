@@ -3,7 +3,7 @@
 
 var database = require('db/database');
 var datasource = database.getDatasource();
-var templatesDaoExtensionsUtils = require('zeus/templates/templatesDaoExtensionUtils');
+var templatesDaoExtensionsUtils = require('zeus/templates/utils/templatesDaoExtensionUtils');
 
 // Create an entity
 exports.create = function(entity) {

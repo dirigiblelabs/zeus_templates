@@ -4,7 +4,7 @@
 var request = require('net/http/request');
 var response = require('net/http/response');
 var xss = require('utils/xss');
-var templatesDao = require('zeus/templates/dao/templatesDao');
+var template_deploymentsDao = require('zeus/templates/dao/template_deploymentsDao');
 
 
 handleRequest(request, response, xss);
@@ -48,50 +48,51 @@ function handleGetRequest(httpRequest, httpResponse, xss) {
 	var offset = xss.escapeSql(httpRequest.getParameter('offset'));
 	var sort = xss.escapeSql(httpRequest.getParameter('sort'));
 	var desc = xss.escapeSql(httpRequest.getParameter('desc'));
+	var tmpld_tmpl_id = xss.escapeSql(httpRequest.getParameter('tmpld_tmpl_id'));
 
 	limit = limit ? limit : 100;
 	offset = offset ? offset : 0;
 
 	if (!hasConflictingParameters(id, count, metadata, httpResponse)) {
 		if (id) {
-			var entity = templatesDao.get(id);
+			var entity = template_deploymentsDao.get(id);
 			if (entity !== null) {
 				sendResponse(httpResponse, httpResponse.OK, 'application/json', JSON.stringify(entity, null, 2));
 			} else {
-				sendResponse(httpResponse, httpResponse.NOT_FOUND, 'text/plain', 'No entity found with \'tmpl_id\'=' + id);
+				sendResponse(httpResponse, httpResponse.NOT_FOUND, 'text/plain', 'No entity found with \'tmpld_id\'=' + id);
 			}
 		} else if (count !== null) {
-			var templatesCount = templatesDao.count();
-			sendResponse(httpResponse, httpResponse.OK, 'text/plain', templatesCount);
+			var template_deploymentsCount = template_deploymentsDao.count(tmpld_tmpl_id);
+			sendResponse(httpResponse, httpResponse.OK, 'text/plain', template_deploymentsCount);
 		} else if (metadata !== null) {
-			var templatesMetadata = templatesDao.metadata();
-			sendResponse(httpResponse, httpResponse.OK, 'application/json', JSON.stringify(templatesMetadata, null, 2));
+			var template_deploymentsMetadata = template_deploymentsDao.metadata();
+			sendResponse(httpResponse, httpResponse.OK, 'application/json', JSON.stringify(template_deploymentsMetadata, null, 2));
 		} else {
-			var templates = templatesDao.list(limit, offset, sort, desc);
-			sendResponse(httpResponse, httpResponse.OK, 'application/json', JSON.stringify(templates, null, 2));
+			var template_deployments = template_deploymentsDao.list(limit, offset, sort, desc, tmpld_tmpl_id);
+			sendResponse(httpResponse, httpResponse.OK, 'application/json', JSON.stringify(template_deployments, null, 2));
 		}
 	}
 }
 
 function handlePostRequest(httpRequest, httpResponse) {
 	var entity = getRequestBody(httpRequest);
-	var id = templatesDao.create(entity);
+	var id = template_deploymentsDao.create(entity);
 	sendResponse(httpResponse, httpResponse.CREATED, 'text/plain', id);
 }
 
 function handlePutRequest(httpRequest, httpResponse) {
 	var entity = getRequestBody(httpRequest);
 	var id = getIdParameter(httpRequest, xss);
-	id = id !== null ? id : entity.tmpl_id;
+	id = id !== null ? id : entity.tmpld_id;
 	if (id !== null) {
-		if (templatesDao.get(id) !== null) {
-			templatesDao.update(entity);
+		if (template_deploymentsDao.get(id) !== null) {
+			template_deploymentsDao.update(entity);
 			sendResponse(httpResponse, httpResponse.NO_CONTENT);
 		} else {
-			sendResponse(httpResponse, httpResponse.NOT_FOUND, 'text/plain', 'No entity found with \'tmpl_id\'=' + id);
+			sendResponse(httpResponse, httpResponse.NOT_FOUND, 'text/plain', 'No entity found with \'tmpld_id\'=' + id);
 		}
 	} else {
-		sendResponse(httpResponse, httpResponse.PRECONDITION_FAILED, 'text/plain', 'Expected \'tmpl_id\' parameter is missing!');
+		sendResponse(httpResponse, httpResponse.PRECONDITION_FAILED, 'text/plain', 'Expected \'tmpld_id\' parameter is missing!');
 	}
 
 }
@@ -99,15 +100,15 @@ function handlePutRequest(httpRequest, httpResponse) {
 function handleDeleteRequest(httpRequest, httpResponse, xss) {
 	var id = getIdParameter(httpRequest, xss);
 	if (id !== null) {
-		var entity = templatesDao.get(id);
+		var entity = template_deploymentsDao.get(id);
 		if (entity !== null) {
-			templatesDao.delete(entity);
+			template_deploymentsDao.delete(entity);
 			sendResponse(httpResponse, httpResponse.NO_CONTENT);
 		} else {
-			sendResponse(httpResponse, httpResponse.NOT_FOUND, 'text/plain', 'No entity found with \'tmpl_id\'=' + id);
+			sendResponse(httpResponse, httpResponse.NOT_FOUND, 'text/plain', 'No entity found with \'tmpld_id\'=' + id);
 		}
 	} else {
-		sendResponse(httpResponse, httpResponse.PRECONDITION_FAILED, 'text/plain', 'Expected \'tmpl_id\' parameter is missing!');
+		sendResponse(httpResponse, httpResponse.PRECONDITION_FAILED, 'text/plain', 'Expected \'tmpld_id\' parameter is missing!');
 	}
 }
 
@@ -118,7 +119,7 @@ function handleNotAllowedRequest(httpResponse) {
 // Retrieve the Id parameter
 function getIdParameter(httpRequest, xss) {
 	var id = xss.escapeSql(httpRequest.getAttribute('path'));
-	id = id !== null ? id : xss.escapeSql(httpRequest.getParameter('tmpl_id'));
+	id = id !== null ? id : xss.escapeSql(httpRequest.getParameter('tmpld_id'));
 	return id;
 }
 

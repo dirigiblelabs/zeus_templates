@@ -1,4 +1,0 @@
-{
-  "extension-point":"/zeus/templates/templates_items_database_crud_hooks",
-  "description":"Database CRUD hooks for the '/ScriptingServices/zeus/templates/templates_items.js' service, managing the 'ZEUS_TEMPLATES_ITEMS' table"
-}
