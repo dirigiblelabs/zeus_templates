@@ -14,8 +14,10 @@ const HTML_LINK = "../templates/applications.html";
 
 exports.getSidebarItem = function() {
 	return {  
-      "name": "Applications",
+      "name": "Templates",
       "path": PATH,
-      "link": HTML_LINK
+      "link": HTML_LINK,
+      "category": "Operate",
+      "order": 403
    };
 };
