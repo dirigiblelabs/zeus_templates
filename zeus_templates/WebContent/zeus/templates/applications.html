@@ -395,11 +395,11 @@
 	<script type="text/javascript">
 		angular.module('page', ['ngAnimate', 'ui.bootstrap']);
 		angular.module('page').controller('ManageController', function ($scope, $http) {
-			const DEPLOYMENT_TEMPLATES_URL = '../../../js/zeus/templates/deployment.js';
-			const CONTAINER_TEMPLATES_URL = '../../../js/zeus/templates/containers.js';
-			const DEPLOYMENT_CONTAINERS_URL = '../../../js/zeus/templates/deploymentContainers.js';
-			const SERVICES_URL = '../../../js/zeus/templates/services.js';
-			const SERVICE_TYPES_URL = '../../../js/zeus/templates/serviceTypes.js';
+			const DEPLOYMENT_TEMPLATES_URL = '../../../js-secured/zeus/templates/deployment.js';
+			const CONTAINER_TEMPLATES_URL = '../../../js-secured/zeus/templates/containers.js';
+			const DEPLOYMENT_CONTAINERS_URL = '../../../js-secured/zeus/templates/deploymentContainers.js';
+			const SERVICES_URL = '../../../js-secured/zeus/templates/services.js';
+			const SERVICE_TYPES_URL = '../../../js-secured/zeus/templates/serviceTypes.js';
 
 			$scope.deploymentOperation = 'show';
 			$scope.showTab = 1;
@@ -700,7 +700,7 @@
 			  	$scope.setPage(1);
 			};
 			
-			var url = '../../../js/zeus/templates/application.js';
+			var url = '../../../js-secured/zeus/templates/application.js';
 
 			$http.get(url)
 				.success(function(data){
